@@ -100,6 +100,7 @@ func (s *CreateOrderService) createOrder(ctx context.Context, endpoint string, o
 	if s.icebergQuantity != nil {
 		m["icebergQty"] = *s.icebergQuantity
 	}
+	m["newOrderRespType"] = "FULL"
 	r.setFormParams(m)
 	data, err = s.c.callAPI(ctx, r, opts...)
 	if err != nil {
@@ -141,6 +142,14 @@ type CreateOrderResponse struct {
 	TimeInForce      string `json:"timeInForce"`
 	Type             string `json:"type"`
 	Side             string `json:"side"`
+	Fills            []Fill `json:"fills"`
+}
+
+type Fill struct {
+	Price          string `json:"price"`
+	Qty            string `json:"qty"`
+	Comission      string `json:"comission"`
+	ComissionAsset string `json:"comissionAsset"`
 }
 
 // ListOpenOrdersService list opened orders
