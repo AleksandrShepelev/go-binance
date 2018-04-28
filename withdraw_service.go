@@ -39,10 +39,10 @@ func (s *CreateWithdrawService) Name(name string) *CreateWithdrawService {
 }
 
 // Do send request
-func (s *CreateWithdrawService) Do(ctx context.Context) (err error) {
+func (s *CreateWithdrawService) Do(ctx context.Context) (res *CreateWithdrawResponse, err error) {
 	r := &request{
 		method:   "POST",
-		endpoint: "/wapi/v1/withdraw.html",
+		endpoint: "/wapi/v3/withdraw.html",
 		secType:  secTypeSigned,
 	}
 	m := params{
@@ -54,8 +54,21 @@ func (s *CreateWithdrawService) Do(ctx context.Context) (err error) {
 		m["name"] = *s.name
 	}
 	r.setFormParams(m)
-	_, err = s.c.callAPI(ctx, r)
-	return err
+	data, err := s.c.callAPI(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+	res = new(CreateWithdrawResponse)
+	err = json.Unmarshal(data, res)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+type CreateWithdrawResponse struct {
+	Id      string `json:"id"`
+	Success bool   `json:"success"`
 }
 
 // ListWithdrawsService list withdraws
@@ -134,6 +147,7 @@ type Withdraw struct {
 	Address   string  `json:"address"`
 	Asset     string  `json:"asset"`
 	TxID      string  `json:"txId"`
+	ID      string  `json:"id"`
 	ApplyTime int64   `json:"applyTime"`
 	Status    int     `json:"status"`
 }

@@ -41,8 +41,8 @@ func (s *ListDepositsService) EndTime(endTime int64) *ListDepositsService {
 // Do send request
 func (s *ListDepositsService) Do(ctx context.Context, opts ...RequestOption) (deposits []*Deposit, err error) {
 	r := &request{
-		method:   "POST",
-		endpoint: "/wapi/v1/getDepositHistory.html",
+		method:   "GET",
+		endpoint: "/wapi/v3/depositHistory.html",
 		secType:  secTypeSigned,
 	}
 	m := params{}
@@ -59,7 +59,6 @@ func (s *ListDepositsService) Do(ctx context.Context, opts ...RequestOption) (de
 		m["endTime"] = *s.endTime
 	}
 	r.setParams(m)
-
 	data, err := s.c.callAPI(ctx, r, opts...)
 	if err != nil {
 		return

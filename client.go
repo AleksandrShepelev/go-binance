@@ -66,6 +66,7 @@ func NewClient(apiKey, secretKey string) *Client {
 		UserAgent:  "Binance/golang",
 		HTTPClient: http.DefaultClient,
 		Logger:     log.New(os.Stderr, "Binance-golang ", log.LstdFlags),
+		Debug:      true,
 	}
 }
 
@@ -103,8 +104,19 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 	if r.recvWindow > 0 {
 		r.setParam(recvWindowKey, r.recvWindow)
 	}
+	if r.endpoint == "/wapi/v3/withdraw.html" {
+		r.setParam("asset", r.form.Get("asset"))
+		r.setParam("address", r.form.Get("address"))
+		r.setParam("name", "test")
+		r.setParam("amount", r.form.Get("amount"))
+		r.form.Del("asset")
+		r.form.Del("address")
+		r.form.Del("amount")
+
+	}
 	if r.secType == secTypeSigned {
 		r.setParam(timestampKey, currentTimestamp())
+
 	}
 	queryString := r.query.Encode()
 	body := &bytes.Buffer{}
