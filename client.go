@@ -66,7 +66,6 @@ func NewClient(apiKey, secretKey string) *Client {
 		UserAgent:  "Binance/golang",
 		HTTPClient: http.DefaultClient,
 		Logger:     log.New(os.Stderr, "Binance-golang ", log.LstdFlags),
-		Debug:      true,
 	}
 }
 
@@ -104,6 +103,8 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 	if r.recvWindow > 0 {
 		r.setParam(recvWindowKey, r.recvWindow)
 	}
+	r.setParam(recvWindowKey, 60000)
+
 	if r.endpoint == "/wapi/v3/withdraw.html" {
 		r.setParam("asset", r.form.Get("asset"))
 		r.setParam("address", r.form.Get("address"))
