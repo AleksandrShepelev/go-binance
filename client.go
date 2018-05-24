@@ -103,7 +103,9 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 	if r.recvWindow > 0 {
 		r.setParam(recvWindowKey, r.recvWindow)
 	}
-	r.setParam(recvWindowKey, 60000)
+	if r.endpoint != "/api/v1/ticker/24hr" {
+		r.setParam(recvWindowKey, 60000)
+	}
 
 	if r.endpoint == "/wapi/v3/withdraw.html" {
 		r.setParam("asset", r.form.Get("asset"))
