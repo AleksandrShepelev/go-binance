@@ -148,8 +148,8 @@ type CreateOrderResponse struct {
 type Fill struct {
 	Price          string `json:"price"`
 	Qty            string `json:"qty"`
-	Comission      string `json:"comission"`
-	ComissionAsset string `json:"comissionAsset"`
+	Comission      string `json:"commission"`
+	ComissionAsset string `json:"commissionAsset"`
 }
 
 // ListOpenOrdersService list opened orders
