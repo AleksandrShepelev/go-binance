@@ -107,8 +107,8 @@ func (s *ListWithdrawsService) EndTime(endTime int64) *ListWithdrawsService {
 // Do send request
 func (s *ListWithdrawsService) Do(ctx context.Context) (withdraws []*Withdraw, err error) {
 	r := &request{
-		method:   "POST",
-		endpoint: "/wapi/v1/getWithdrawHistory.html",
+		method:   "GET",
+		endpoint: "/wapi/v3/withdrawHistory.html",
 		secType:  secTypeSigned,
 	}
 	if s.asset != nil {
